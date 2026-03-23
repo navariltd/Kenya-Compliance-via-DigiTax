@@ -351,7 +351,7 @@
       "fieldname": "etims_country_of_origin",
       "fieldtype": "Link",
       "label": "eTims Country of Origin",
-      "options": "Navari eTims Country"
+      "options": "eTims Country of Origin"
     },
     {
       "fieldname": "taxation_type",
@@ -393,7 +393,7 @@
       "fieldname": "packaging_unit",
       "fieldtype": "Link",
       "label": "Packaging Unit",
-      "options": "Navari eTims Packaging Unit"
+      "options": "eTims Packaging Unit"
     },
     {
       "fieldname": "column_break_jaqq",
@@ -415,7 +415,7 @@
       "fieldname": "unit_of_quantity",
       "fieldtype": "Link",
       "label": "Unit of Quantity",
-      "options": "Navari eTims Unit of Quantity"
+      "options": "eTims Unit of Quantity"
     },
     {
       "fieldname": "column_break_oqib",
@@ -437,13 +437,13 @@
       "fieldname": "product_type",
       "fieldtype": "Link",
       "label": "Product Type Code",
-      "options": "Navari eTims Product Type"
+      "options": "eTims Product Type"
     },
     {
       "fieldname": "item_type",
       "fieldtype": "Link",
       "label": "eTims Item Type",
-      "options": "Navari eTims Item Type"
+      "options": "eTims Item Type"
     },
     {
       "fieldname": "column_break_dxoa",

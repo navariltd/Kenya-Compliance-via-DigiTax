@@ -57,7 +57,7 @@
       "fieldname": "origin_nation_code",
       "fieldtype": "Link",
       "label": "Origin Nation Code",
-      "options": "Navari eTims Country"
+      "options": "eTims Country of Origin"
     },
     {
       "fieldname": "declaration_date",
@@ -103,7 +103,7 @@
       "fieldname": "export_nation_code",
       "fieldtype": "Link",
       "label": "Export Nation Code",
-      "options": "Navari eTims Country"
+      "options": "eTims Country of Origin"
     },
     {
       "fieldname": "declaration_number",
@@ -119,13 +119,13 @@
       "fieldname": "packaging_unit_code",
       "fieldtype": "Link",
       "label": "Packaging Unit Code",
-      "options": "Navari eTims Packaging Unit"
+      "options": "eTims Packaging Unit"
     },
     {
       "fieldname": "quantity_unit_code",
       "fieldtype": "Link",
       "label": "Quantity Unit Code",
-      "options": "Navari eTims Unit of Quantity"
+      "options": "eTims Unit of Quantity"
     },
     {
       "fieldname": "agent_name",
