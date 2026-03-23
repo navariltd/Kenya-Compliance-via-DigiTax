@@ -1,6 +1,6 @@
 import asyncio
 import json
-from typing import List
+from typing import List, Union
 
 import aiohttp
 import frappe
@@ -38,26 +38,25 @@ from .remote_response_status_handlers import (
 endpoints_builder = EndpointsBuilder()
 
 
+def _parse_docs_list(docs_list: Union[str, list, tuple]) -> list:
+    """Parse docs_list that may be a JSON-encoded string or an already-decoded list/tuple."""
+    if isinstance(docs_list, (list, tuple)):
+        return list(docs_list)
+    if isinstance(docs_list, str):
+        try:
+            return json.loads(docs_list)
+        except json.JSONDecodeError:
+            frappe.throw(_("Invalid docs_list format. Expected a JSON array or list of names."))
+    frappe.throw(_("Invalid docs_list type. Expected a JSON string or list of names."))
+
+
 @frappe.whitelist()
-def bulk_submit_sales_invoices(docs_list: str = None, settings_name: str = None) -> str:
+def bulk_submit_sales_invoices(docs_list: Union[str, list, tuple, None] = None, settings_name: str = None) -> str:
     """Bulk submit sales invoices in chunks"""
     filters = {"docstatus": 1, "successfully_submitted": 0}
 
     if docs_list:
-        # Accept both JSON-string input and Python list input for docs_list
-        if isinstance(docs_list, str):
-            try:
-                provided_names = json.loads(docs_list)
-            except (TypeError, json.JSONDecodeError):
-                frappe.throw(
-                    _("Invalid docs_list format. Expected a JSON array or list of invoice names.")
-                )
-        elif isinstance(docs_list, list):
-            provided_names = docs_list
-        else:
-            frappe.throw(
-                _("Invalid docs_list type. Expected a JSON string or list of invoice names.")
-            )
+        provided_names = _parse_docs_list(docs_list)
         valid_invoices = frappe.get_all("Sales Invoice", filters=filters, pluck="name")
         invoices_to_process = [n for n in provided_names if n in valid_invoices]
     else:
@@ -97,12 +96,12 @@ def process_invoices_sequentially(invoice_list: List[str]) -> None:
 
 
 @frappe.whitelist()
-def bulk_verify_and_resend_invoices(docs_list: str, settings_name: str = None) -> None:
+def bulk_verify_and_resend_invoices(docs_list: Union[str, list, tuple], settings_name: str = None) -> None:
     """Bulk verify and resend invoices in chunks"""
     invoices_to_process = []
 
     if docs_list:
-        data = json.loads(docs_list)
+        data = _parse_docs_list(docs_list)
         all_sales_invoices = frappe.db.get_all(
             "Sales Invoice", {"docstatus": 1}, ["name"]
         )
@@ -142,9 +141,9 @@ def process_verify_invoice_batch(
 
 
 @frappe.whitelist()
-def bulk_register_items(docs_list: str, settings_name: str = None) -> None:
+def bulk_register_items(docs_list: Union[str, list, tuple], settings_name: str = None) -> None:
     """Bulk register items in chunks"""
-    item_names = json.loads(docs_list)
+    item_names = _parse_docs_list(docs_list)
     settings = (
         [frappe.get_doc(SETTINGS_DOCTYPE_NAME, settings_name)]
         if settings_name
@@ -397,9 +396,9 @@ def fetch_item_details(request_data: str, settings_name: str) -> None:
 
 
 @frappe.whitelist()
-def bulk_submit_customers(docs_list: str, settings_name: str = None) -> None:
+def bulk_submit_customers(docs_list: Union[str, list, tuple], settings_name: str = None) -> None:
     """Bulk submit customers in chunks"""
-    customers = json.loads(docs_list)
+    customers = _parse_docs_list(docs_list)
     settings = (
         [frappe.get_doc(SETTINGS_DOCTYPE_NAME, settings_name)]
         if settings_name
